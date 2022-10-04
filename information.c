@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "information.h"
 
@@ -57,27 +58,43 @@ Weapon* GetWeaponInfo(char* name)
 
 Enemy enemy[ENEMY_NUM];
 
+Enemy DoubleCircle;
+
+void SetDoubleCircleInfo()
+{
+	DoubleCircle.MaxNum = 20;
+	DoubleCircle.XYHP = (int**)malloc(sizeof(int*) * DoubleCircle.MaxNum);
+	DoubleCircle.XYHP[0] = (int*)malloc(sizeof(int) * DoubleCircle.MaxNum * 3);
+	for (int i = 1; i < DoubleCircle.MaxNum; i++)
+	{
+		DoubleCircle.XYHP[i] = DoubleCircle.XYHP[i-1] + 3;
+	}
+	for (int i = 0; i < DoubleCircle.MaxNum; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			DoubleCircle.XYHP[i][j] = 0;
+		}
+	}
+	DoubleCircle.hp = 20;
+	DoubleCircle.speed = 20;
+	DoubleCircle.damage = 10;
+	DoubleCircle.CreateDelay = 300;
+	DoubleCircle.shape = "¡Ý";
+}
+
 void SetEnemyInfo()
 {
-	//////////////////////////////
-	// Set DoubleCircle information
-	//////////////////////////////
+	SetDoubleCircleInfo();
+}
 
-	(enemy + 0)->MaxNum = 10;
-	for (int i = 0; i < (enemy + 0)->MaxNum; i++)
-	{
-		(enemy + 0)->XYHP[i][0] = 0;
-		(enemy + 0)->XYHP[i][1] = 0;
-		(enemy + 0)->XYHP[i][2] = 0;
-	}
-	(enemy + 0)->hp = 20;
-	(enemy + 0)->speed = 50;
-	(enemy + 0)->damage = 10;
-	(enemy + 0)->CreateDelay = 300;
-	(enemy + 0)->shape = "¡Ý";
+void FreeEnemyInfo(Enemy *enemy)
+{
+	free(enemy->XYHP[0]);
+	free(enemy->XYHP);
 }
 
 Enemy* GetEnemyInfo()
 {
-	return enemy;
+	return &DoubleCircle;
 }

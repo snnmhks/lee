@@ -31,7 +31,7 @@ int main()
 		MapPrint(GetPlayerInfo(), GetScreenInfo());
 		MovePlayer(GetPlayerInfo(), ReturnMapData());;
 		PlayerPrint(GetPlayerInfo(), GetWeaponInfo("pistol"), GetScreenInfo());
-		shoot(GetPlayerInfo(), GetWeaponInfo("pistol"), GetEnemyInfo(), ReturnMapData(), GetScreenInfo());
+		shoot(GetPlayerInfo(), GetWeaponInfo("pistol"), ReturnMapData(), GetScreenInfo());
 		HittedEnemy(GetEnemyInfo(), GetWeaponInfo("pistol"), ReturnMapData());
 		GameOver(GetPlayerInfo(), GetScreenInfo());
 		if (RevisionScreen != 2)

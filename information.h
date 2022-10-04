@@ -65,15 +65,15 @@ Weapon* GetWeaponInfo(char* name);
 // enemy information
 ///////////////////////////
 
-#define ENEMY_NUM 1
+#define ENEMY_NUM 2
 // 적 종류 가짓수
 
 typedef struct _Enemy
 {
-	int XYHP[10][3];
+	int MaxNum;
+	int **XYHP;
 	// XYHP의 첫번째 길이가 최대 몹 수, 두번째 인자는 순서대로 x좌표, y좌표, hp다.
 	int hp;
-	int MaxNum;
 	int speed;
 	int damage;
 	int CreateDelay;

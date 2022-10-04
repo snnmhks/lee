@@ -6,8 +6,8 @@
 
 //////////////////////////////////////
 
-static int CreateDelay[ENEMY_NUM] = { 0, };
-static int speed[ENEMY_NUM] = { 0, };
+static int CreateDelay = 0;
+static int speed = 0;
 static int RandomPosition[4] = { 1, 2, 97, 98 };
 static int DamageDelay_0 = 0;
 static int DamageDelay = 10;
@@ -16,84 +16,78 @@ static int DamageDelay = 10;
 
 void CreateEnemy(Enemy* enemy)
 {
-	for (int Enum = 0; Enum < ENEMY_NUM; Enum++)
+	if (CreateDelay >= enemy->CreateDelay)
 	{
-		if (CreateDelay[Enum] >= (enemy + Enum)->CreateDelay)
+		for (int i = 0; i < enemy->MaxNum; i++)
 		{
-			for (int i = 0; i < (enemy + Enum)->MaxNum; i++)
+			int x = (rand() % (MAP_X - 3)) + 1;
+			int y = RandomPosition[rand() % 4];
+			if (enemy->XYHP[i][2] <= 0)
 			{
-				int x = (rand() % 97) + 1;
-				int y = RandomPosition[rand() % 4];
-				if ((enemy + Enum)->XYHP[i][2] <= 0)
-				{
-					(enemy + Enum)->XYHP[i][0] = x;
-					(enemy + Enum)->XYHP[i][1] = y;
-					(enemy + Enum)->XYHP[i][2] = (enemy + Enum)->hp;
-				}
+				enemy->XYHP[i][0] = x;
+				enemy->XYHP[i][1] = y;
+				enemy->XYHP[i][2] = enemy->hp;
 			}
-			CreateDelay[Enum] = 0;
 		}
-		else if (CreateDelay[Enum] < (enemy + Enum)->CreateDelay)
-		{
-			CreateDelay[Enum]++;
-		}
+		CreateDelay = 0;
+	}
+	else if (CreateDelay < enemy->CreateDelay)
+	{
+		CreateDelay++;
 	}
 }
 
+
 void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 {
-	for (int Enum = 0; Enum < ENEMY_NUM; Enum++)
+
+	for (int i = 0; i < enemy->MaxNum; i++)
 	{
-		for (int i = 0; i < (enemy + Enum)->MaxNum; i++)
+		if (enemy->XYHP[i][2] > 0)
 		{
-			if ((enemy + Enum)->XYHP[i][2] > 0)
-			{
-				MapData[(enemy + Enum)->XYHP[i][1]][(enemy + Enum)->XYHP[i][0]] = (enemy + Enum)->shape;
-			}
+			MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = enemy->shape;
 		}
 	}
+	
 }
 
 void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 {
-	for (int Enum = 0; Enum < ENEMY_NUM; Enum++)
+	for (int i = 0; i < enemy->MaxNum; i++)
 	{
-		for (int i = 0; i < (enemy + Enum)->MaxNum; i++)
+		if (speed >= enemy->speed && enemy->XYHP[i][2] > 0)
 		{
-			if (speed[Enum] >= (enemy + Enum)->speed && (enemy + Enum)->XYHP[i][2] > 0)
+			MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = BLANK;
+			if (player->position[0] > enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] + 1] != BLOCK)
 			{
-				MapData[(enemy + Enum)->XYHP[i][1]][(enemy + Enum)->XYHP[i][0]] = BLANK;
-				if (player->position[0] > (enemy + Enum)->XYHP[i][0] && MapData[(enemy + Enum)->XYHP[i][1]][(enemy + Enum)->XYHP[i][0] + 1] != BLOCK)
-				{
-					(enemy + Enum)->XYHP[i][0]++;
-				}
-				else if (player->position[0] < (enemy + Enum)->XYHP[i][0] && MapData[(enemy + Enum)->XYHP[i][1]][(enemy + Enum)->XYHP[i][0] - 1] != BLOCK)
-				{
-					(enemy + Enum)->XYHP[i][0]--;
-				}
-				if (player->position[1] > (enemy + Enum)->XYHP[i][1] && MapData[(enemy + Enum)->XYHP[i][1] + 1][(enemy + Enum)->XYHP[i][0]] != BLOCK)
-				{
-					(enemy + Enum)->XYHP[i][1]++;
-				}
-				else if (player->position[1] < (enemy + Enum)->XYHP[i][1] && MapData[(enemy + Enum)->XYHP[i][1] - 1][(enemy + Enum)->XYHP[i][0]] != BLOCK)
-				{
-					(enemy + Enum)->XYHP[i][1]--;
-				}
-				if (player->position[0] == (enemy + Enum)->XYHP[i][0] && player->position[1] == (enemy + Enum)->XYHP[i][1] && DamageDelay_0 <= 0)
-				{
-					player->hp -= (enemy + Enum)->damage;
-					DamageDelay_0 = DamageDelay;
-				}
-				else if (DamageDelay_0 <= DamageDelay)
-				{
-					DamageDelay_0 -= 1;
-				}
-				speed[Enum] = 0;
+				enemy->XYHP[i][0]++;
 			}
-			else if (speed[Enum] < (enemy + Enum)->speed)
+			else if (player->position[0] < enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] - 1] != BLOCK)
 			{
-				speed[Enum]++;
+				enemy->XYHP[i][0]--;
 			}
+			if (player->position[1] > enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] + 1][enemy->XYHP[i][0]] != BLOCK)
+			{
+				enemy->XYHP[i][1]++;
+			}
+			else if (player->position[1] < enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] - 1][enemy->XYHP[i][0]] != BLOCK)
+			{
+				enemy->XYHP[i][1]--;
+			}
+			if (player->position[0] == enemy->XYHP[i][0] && player->position[1] == enemy->XYHP[i][1] && DamageDelay_0 <= 0)
+			{
+				player->hp -= enemy->damage;
+				DamageDelay_0 = DamageDelay;
+			}
+			else if (DamageDelay_0 <= DamageDelay)
+			{
+				DamageDelay_0 -= 1;
+			}
+			speed = 0;
+		}
+		else if (speed< enemy->speed)
+		{
+			speed++;
 		}
 	}
 }

@@ -9,8 +9,8 @@
 
 static int BulletDelay = 0;
 static int vector[2] = { 1,0 };
-static int EnemyPosition[3] = { -1, -1, 0 };
-// 첫번째 인자부터 적 x좌표, 적 y좌표, 적 종류다.
+static int EnemyPosition[2] = { -1, -1 };
+// 첫번째 인자부터 적 x좌표, 적 y좌표
 
 //////////////////////////////////////////
 
@@ -115,7 +115,7 @@ void PlayerPrint(const Player* player, const Weapon* weapon, const HANDLE screen
 	WriteFile(screen, weapon->shape, 2, &dw, NULL);
 }
 
-void shoot(const Player* player, Weapon* weapon, const Enemy* enemy, const char* MapData[MAP_Y][MAP_X], const HANDLE screen)
+void shoot(const Player* player, Weapon* weapon, const char* MapData[MAP_Y][MAP_X], const HANDLE screen)
 {
 	DWORD dw;
 
@@ -155,20 +155,14 @@ void shoot(const Player* player, Weapon* weapon, const Enemy* enemy, const char*
 				BulletDelay = 0;
 				break;
 			}
-			else if (MapData[player->position[1] + vector[1] * (i + 1)][player->position[0] + vector[0] * (i + 1)] != BLANK && \
-				MapData[player->position[1] + vector[1] * (i + 1)][player->position[0] + vector[0] * (i + 1)] != BLOCK)
+			else if (MapData[player->position[1] + vector[1] * (i + 1)][player->position[0] + vector[0] * (i + 1)] != BLANK)
 			{
 				COORD CursorPosition = { x + vector[0] * (i + 1) * 2,y + vector[1] * (i + 1) };
 				SetConsoleCursorPosition(screen, CursorPosition);
 				WriteFile(screen, weapon->shape, 2, &dw, NULL);
 				BulletDelay = 0;
-				for (int Enum = 0; Enum < ENEMY_NUM; Enum++)
-				{
-					EnemyPosition[0] = player->position[0] + vector[0] * (i + 1);
-					EnemyPosition[1] = player->position[1] + vector[1] * (i + 1);
-					EnemyPosition[2] = Enum;
-
-				}
+				EnemyPosition[0] = player->position[0] + vector[0] * (i + 1);
+				EnemyPosition[1] = player->position[1] + vector[1] * (i + 1);
 				break;
 			}
 			else if (i == weapon->reach - 1)
@@ -208,12 +202,12 @@ void shoot(const Player* player, Weapon* weapon, const Enemy* enemy, const char*
 
 void HittedEnemy(Enemy* enemy, const Weapon* weapon, char* MapData[MAP_Y][MAP_X])
 {
-	for (int Eindex = 0; Eindex < (enemy + EnemyPosition[2])->MaxNum; Eindex++)
+	for (int Eindex = 0; Eindex < enemy->MaxNum; Eindex++)
 	{
-		if ((enemy + EnemyPosition[2])->XYHP[Eindex][0] == EnemyPosition[0] && (enemy + EnemyPosition[2])->XYHP[Eindex][1] == EnemyPosition[1])
+		if (enemy->XYHP[Eindex][0] == EnemyPosition[0] && enemy->XYHP[Eindex][1] == EnemyPosition[1])
 		{
-			(enemy + EnemyPosition[2])->XYHP[Eindex][2] -= weapon->damage;
-			if ((enemy + EnemyPosition[2])->XYHP[Eindex][2] <= 0)
+			enemy->XYHP[Eindex][2] -= weapon->damage;
+			if (enemy->XYHP[Eindex][2] <= 0)
 			{
 				MapData[EnemyPosition[1]][EnemyPosition[0]] = BLANK;
 			}
@@ -234,8 +228,8 @@ void GameOver(const Player* player, const HANDLE screen)
 		CursorPosition.Y = 20;
 		SetConsoleCursorPosition(screen, CursorPosition);
 		WriteFile(screen, "GameOver...", 12, &dw, NULL);
-		_getch();
-		//exit(1);
+		Sleep(3000);
+		exit(1);
 	}
 }
 
