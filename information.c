@@ -16,6 +16,8 @@ void SetPlayerInfo()
 	circle.FastMovingDelay = 100;
 	circle.FastMovingReach = 5;
 	circle.shape = "¡Û";
+
+	circle.RemainFastMovingDelay = 0;
 }
 
 Player* GetPlayerInfo()

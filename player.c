@@ -8,7 +8,6 @@
 //////////////////////////////////////////
 
 static int BulletDelay = 0;
-static int FastMovingDelay = 0;
 static int vector[2] = { 1,0 };
 static int EnemyPosition[3] = { -1, -1, 0 };
 // 첫번째 인자부터 적 x좌표, 적 y좌표, 적 종류다.
@@ -58,7 +57,7 @@ void MovePlayer(Player* player, const char* MapData[MAP_Y][MAP_X])
 		}
 		vector[0] = -1;
 	}
-	if (GetAsyncKeyState(VK_SPACE) && FastMovingDelay >= player->FastMovingDelay)
+	if (GetAsyncKeyState(VK_SPACE) && player->RemainFastMovingDelay >= player->FastMovingDelay)
 	{
 		for (int i = 0; i < player->FastMovingReach; i++)
 		{
@@ -66,20 +65,20 @@ void MovePlayer(Player* player, const char* MapData[MAP_Y][MAP_X])
 			{
 				player->position[0] += vector[0] * i;
 				player->position[1] += vector[1] * i;
-				FastMovingDelay = 0;
+				player->RemainFastMovingDelay = 0;
 				break;
 			}
 			else if (i == player->FastMovingReach - 1)
 			{
 				player->position[0] += vector[0] * player->FastMovingReach;
 				player->position[1] += vector[1] * player->FastMovingReach;
-				FastMovingDelay = 0;
+				player->RemainFastMovingDelay = 0;
 			}
 		}
 	}
-	else if (FastMovingDelay < player->FastMovingDelay)
+	else if (player->RemainFastMovingDelay < player->FastMovingDelay)
 	{
-		FastMovingDelay++;
+		player->RemainFastMovingDelay++;
 	}
 }
 

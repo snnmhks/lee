@@ -30,6 +30,8 @@ typedef struct _Player
 	int FastMovingReach;
 	int FastMovingDelay;
 	char* shape;
+
+	int RemainFastMovingDelay;
 }Player;
 
 void SetPlayerInfo();

@@ -191,6 +191,15 @@ void PrintStateScreen(const Player* player, Weapon *weapon, HANDLE screen)
 			WriteFile(screen, "бр", 2, &dw, NULL);
 		}
 	}
+
+	CursorPosition.X = 40;
+	CursorPosition.Y = CONSOLE_HEIGHT + 4;
+	SetConsoleCursorPosition(screen, CursorPosition);
+	WriteFile(screen, "Space ", 6, &dw, NULL);
+	for (int i = 0; i < 10 - (player->RemainFastMovingDelay * 10) / player->FastMovingDelay; i++)
+	{
+		WriteFile(screen, "бр", 2, &dw, NULL);
+	}
 }
 
 char* ReturnMapData()
