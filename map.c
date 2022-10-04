@@ -128,7 +128,7 @@ void MapPrint(const Player* player, HANDLE screen)
 	}
 }
 
-void PrintStateScreen(const Player* player, HANDLE screen)
+void PrintStateScreen(const Player* player, Weapon *weapon, HANDLE screen)
 {
 	COORD CursorPosition = { 0, CONSOLE_HEIGHT };
 	DWORD dw;
@@ -152,22 +152,45 @@ void PrintStateScreen(const Player* player, HANDLE screen)
 	}
 
 	char hp[6];
-	int HpLength = 2;
-	if (player->hp >= 100)
+	sprintf_s(hp, 6, "%d", player->hp);
+	if (player->hp < 100 && player->hp >= 10)
 	{
-		HpLength = 6;
+		strcat_s(hp,6, " ");
 	}
-	else if (player->hp >= 10)
+	else if (player->hp < 10)
 	{
-		HpLength = 4;
+		strcat_s(hp,6, " ");
+		strcat_s(hp,6, " ");
 	}
 	CursorPosition.X = 2;
 	CursorPosition.Y = CONSOLE_HEIGHT + 4;
 	SetConsoleCursorPosition(screen, CursorPosition);
 	WriteFile(screen, "HP : ", 5, &dw, NULL);
-	sprintf_s(hp, HpLength,"%d", player->hp);
-	WriteFile(screen, hp, HpLength, &dw, NULL);
+	WriteFile(screen, hp, 6, &dw, NULL);
 
+	CursorPosition.Y = CONSOLE_HEIGHT + 6;
+	SetConsoleCursorPosition(screen, CursorPosition);
+	WriteFile(screen, "Weapon : ", 9, &dw, NULL);
+	WriteFile(screen, weapon->name, strlen(weapon->name), &dw, NULL);
+
+	CursorPosition.Y = CONSOLE_HEIGHT + 8;
+	SetConsoleCursorPosition(screen, CursorPosition);
+	if (!weapon->ReloadState)
+	{
+		WriteFile(screen, "Bullet : ", 9, &dw, NULL);
+		for (int i = 0; i < weapon->RemainBullet; i++)
+		{
+			WriteFile(screen, weapon->shape, 2, &dw, NULL);
+		}
+	}
+	else if (weapon->ReloadState)
+	{
+		WriteFile(screen, "Reload! ", 8, &dw, NULL);
+		for (int i = 0; i < 10 - (weapon->RemainReloadDelay*10)/weapon->ReloadDelay; i++)
+		{
+			WriteFile(screen, "бр", 2, &dw, NULL);
+		}
+	}
 }
 
 char* ReturnMapData()

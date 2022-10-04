@@ -31,10 +31,17 @@ static Weapon pistol;
 
 void SetPistolInfo()
 {
-	pistol.delay = 10;
+	pistol.FireDelay = 20;
 	pistol.reach = 5;
+	pistol.name = "pistol";
 	pistol.shape = "¡Ú";
 	pistol.damage = 10;
+	pistol.MaxBullet = 10;
+	pistol.ReloadDelay = 100;
+
+	pistol.RemainBullet = 10;
+	pistol.RemainReloadDelay = 0;
+	pistol.ReloadState = 0;
 }
 
 Weapon* GetWeaponInfo(char* name)

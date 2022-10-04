@@ -21,6 +21,7 @@
 ///////////////////////////
 
 #define A_KEY 65
+#define R_KEY 82
 
 typedef struct _Player
 {
@@ -41,10 +42,17 @@ Player* GetPlayerInfo();
 
 typedef struct _Weapon
 {
-	int delay;
+	int FireDelay;
 	int reach;
+	char* name;
 	char* shape;
 	int damage;
+	int MaxBullet;
+	int ReloadDelay;
+
+	int RemainBullet;
+	int RemainReloadDelay;
+	int ReloadState;
 }Weapon;
 
 void SetPistolInfo();

@@ -12,7 +12,7 @@ void SetBarrier();
 
 void MapPrint(const Player* player, HANDLE screen);
 
-void PrintStateScreen(const Player* player, HANDLE screen);
+void PrintStateScreen(const Player* player, Weapon *weapon,HANDLE screen);
 
 char* ReturnMapData();
 

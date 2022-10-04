@@ -24,7 +24,7 @@ int main()
 	{
 		ScreenFlipping();
 		ScreenClear();
-		PrintStateScreen(GetPlayerInfo(), GetScreenInfo());
+		PrintStateScreen(GetPlayerInfo(), GetWeaponInfo("pistol"), GetScreenInfo());
 		CreateEnemy(GetEnemyInfo());
 		MoveEnemy(GetPlayerInfo(), GetEnemyInfo(), ReturnMapData());
 		EnemyToMap(GetEnemyInfo(), ReturnMapData());

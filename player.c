@@ -116,11 +116,11 @@ void PlayerPrint(const Player* player, const Weapon* weapon, const HANDLE screen
 	WriteFile(screen, weapon->shape, 2, &dw, NULL);
 }
 
-void shoot(const Player* player, const Weapon* weapon, const Enemy* enemy, const char* MapData[MAP_Y][MAP_X], const HANDLE screen)
+void shoot(const Player* player, Weapon* weapon, const Enemy* enemy, const char* MapData[MAP_Y][MAP_X], const HANDLE screen)
 {
 	DWORD dw;
 
-	if (GetAsyncKeyState(A_KEY) && BulletDelay >= weapon->delay)
+	if (GetAsyncKeyState(A_KEY) && BulletDelay >= weapon->FireDelay && weapon->RemainBullet > 0 && !weapon->ReloadState)
 	{
 		int x = player->position[0] * 2;
 		int y = player->position[1];
@@ -185,9 +185,23 @@ void shoot(const Player* player, const Weapon* weapon, const Enemy* enemy, const
 				BulletDelay = 0;
 			}
 		}
-
+		weapon->RemainBullet--;
 	}
-	else if (BulletDelay < weapon->delay)
+	if (GetAsyncKeyState(R_KEY) || weapon->ReloadState)
+	{
+		weapon->ReloadState = 1;
+		if (weapon->RemainReloadDelay == weapon->ReloadDelay)
+		{
+			weapon->RemainBullet = weapon->MaxBullet;
+			weapon->ReloadState = 0;
+			weapon->RemainReloadDelay = 0;
+		}
+		else if (weapon->RemainReloadDelay < weapon->ReloadDelay)
+		{
+			weapon->RemainReloadDelay++;
+		}
+	}
+	else if (BulletDelay < weapon->FireDelay)
 	{
 		BulletDelay++;
 	}
