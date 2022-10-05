@@ -24,16 +24,16 @@ int main()
 	{
 		ScreenFlipping();
 		ScreenClear();
-		PrintStateScreen(GetPlayerInfo(), GetWeaponInfo("pistol"), GetScreenInfo());
-		CreateEnemy(GetEnemyInfo());
-		MoveEnemy(GetPlayerInfo(), GetEnemyInfo(), ReturnMapData());
-		EnemyToMap(GetEnemyInfo(), ReturnMapData());
+		GameOver(GetPlayerInfo(), GetScreenInfo());
+		PrintStateScreen(GetPlayerInfo(), GetWeaponInfo("pistol"), GetRoundInfo(), GetGoldInfo(), GetScreenInfo());
+		CreateEnemy(GetEnemyInfo(GetRoundInfo()));
+		MoveEnemy(GetPlayerInfo(), GetEnemyInfo(GetRoundInfo()), ReturnMapData());
+		EnemyToMap(GetEnemyInfo(GetRoundInfo()), ReturnMapData());
 		MapPrint(GetPlayerInfo(), GetScreenInfo());
 		MovePlayer(GetPlayerInfo(), ReturnMapData());;
 		PlayerPrint(GetPlayerInfo(), GetWeaponInfo("pistol"), GetScreenInfo());
 		shoot(GetPlayerInfo(), GetWeaponInfo("pistol"), ReturnMapData(), GetScreenInfo());
-		HittedEnemy(GetEnemyInfo(), GetWeaponInfo("pistol"), ReturnMapData());
-		GameOver(GetPlayerInfo(), GetScreenInfo());
+		HittedEnemy(GetEnemyInfo(GetRoundInfo()), GetWeaponInfo("pistol"), ReturnMapData());
 		if (RevisionScreen != 2)
 			// 버퍼 두개의 크기를 한번 늘였다가 줄여줘야지 제대로 프린팅이됨
 		{

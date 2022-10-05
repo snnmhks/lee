@@ -94,7 +94,7 @@ void SetBarrier()
 
 }
 
-void MapPrint(const Player* player, HANDLE screen)
+void MapPrint(const Player* player, const HANDLE screen)
 {
 	COORD CursorPosition = { 0,0 };
 	DWORD dw;
@@ -128,7 +128,7 @@ void MapPrint(const Player* player, HANDLE screen)
 	}
 }
 
-void PrintStateScreen(const Player* player, Weapon *weapon, HANDLE screen)
+void PrintStateScreen(const Player* player, const Weapon *weapon, const int round, const int gold, const HANDLE screen)
 {
 	COORD CursorPosition = { 0, CONSOLE_HEIGHT };
 	DWORD dw;
@@ -151,22 +151,22 @@ void PrintStateScreen(const Player* player, Weapon *weapon, HANDLE screen)
 		WriteFile(screen, "-", 1, &dw, NULL);
 	}
 
-	char hp[6];
-	sprintf_s(hp, 6, "%d", player->hp);
+	char hp[4];
+	sprintf_s(hp, 4, "%d", player->hp);
 	if (player->hp < 100 && player->hp >= 10)
 	{
-		strcat_s(hp,6, " ");
+		strcat_s(hp,4, " ");
 	}
 	else if (player->hp < 10)
 	{
-		strcat_s(hp,6, " ");
-		strcat_s(hp,6, " ");
+		strcat_s(hp,4, " ");
+		strcat_s(hp,4, " ");
 	}
 	CursorPosition.X = 2;
 	CursorPosition.Y = CONSOLE_HEIGHT + 4;
 	SetConsoleCursorPosition(screen, CursorPosition);
 	WriteFile(screen, "HP : ", 5, &dw, NULL);
-	WriteFile(screen, hp, 6, &dw, NULL);
+	WriteFile(screen, hp, 4, &dw, NULL);
 
 	CursorPosition.Y = CONSOLE_HEIGHT + 6;
 	SetConsoleCursorPosition(screen, CursorPosition);
@@ -200,6 +200,38 @@ void PrintStateScreen(const Player* player, Weapon *weapon, HANDLE screen)
 	{
 		WriteFile(screen, "бр", 2, &dw, NULL);
 	}
+
+	char r[3];
+	sprintf_s(r, 3, "%d", round);
+	if (round < 10)
+	{
+		strcat_s(r, 3, " ");
+	}
+	CursorPosition.X = 40;
+	CursorPosition.Y = CONSOLE_HEIGHT + 6;
+	SetConsoleCursorPosition(screen, CursorPosition);
+	WriteFile(screen, "Round : ", 8, &dw, NULL);
+	WriteFile(screen, r, 3, &dw, NULL);
+
+	char g[MAX_GOLD_SCALE+1];
+	int TmpGold = gold;
+	int GoldScale = 1;
+	sprintf_s(g, MAX_GOLD_SCALE + 1, "%d", gold);
+	while(TmpGold/10 != 0)
+	{
+		TmpGold = TmpGold / 10;
+		GoldScale++;
+	}
+	for (int i = 0; i < MAX_GOLD_SCALE - GoldScale; i++)
+	{
+		strcat_s(g, MAX_GOLD_SCALE + 1, " ");
+	}
+
+	CursorPosition.X = 40;
+	CursorPosition.Y = CONSOLE_HEIGHT + 8;
+	SetConsoleCursorPosition(screen, CursorPosition);
+	WriteFile(screen, "Gold : ", 7, &dw, NULL);
+	WriteFile(screen, g, MAX_GOLD_SCALE + 1, &dw, NULL);
 }
 
 char* ReturnMapData()

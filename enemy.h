@@ -10,4 +10,6 @@ void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X]);
 
 void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X]);
 
+int GetRoundInfo();
+
 #endif

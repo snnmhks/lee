@@ -8,9 +8,11 @@
 
 static int CreateDelay = 0;
 static int speed = 0;
-static int RandomPosition[4] = { 1, 2, 97, 98 };
+static int RandomPosition[4] = { 1, 2, MAP_Y - 3, MAP_Y - 2 };
 static int DamageDelay_0 = 0;
 static int DamageDelay = 10;
+static int round = 1;
+static int wave = 0;
 
 //////////////////////////////////////
 
@@ -36,7 +38,6 @@ void CreateEnemy(Enemy* enemy)
 		CreateDelay++;
 	}
 }
-
 
 void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 {
@@ -90,4 +91,9 @@ void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 			speed++;
 		}
 	}
+}
+
+int GetRoundInfo()
+{
+	return round;
 }

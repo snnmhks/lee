@@ -10,9 +10,9 @@ void SetMapData();
 
 void SetBarrier();
 
-void MapPrint(const Player* player, HANDLE screen);
+void MapPrint(const Player* player, const HANDLE screen);
 
-void PrintStateScreen(const Player* player, Weapon *weapon,HANDLE screen);
+void PrintStateScreen(const Player* player, const Weapon *weapon, const int round, const int gold, const HANDLE screen);
 
 char* ReturnMapData();
 

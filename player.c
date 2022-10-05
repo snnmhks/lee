@@ -11,6 +11,7 @@ static int BulletDelay = 0;
 static int vector[2] = { 1,0 };
 static int EnemyPosition[2] = { -1, -1 };
 // 첫번째 인자부터 적 x좌표, 적 y좌표
+static int gold = 0;
 
 //////////////////////////////////////////
 
@@ -88,21 +89,21 @@ void PlayerPrint(const Player* player, const Weapon* weapon, const HANDLE screen
 
 	int x = player->position[0] * 2;
 	int y = player->position[1];
-	if (x > 46 && x <= 154)
+	if (x > CONSOLE_WIDTH/2 && x <= MAP_X*2- CONSOLE_WIDTH / 2)
 	{
-		x = 46;
+		x = CONSOLE_WIDTH / 2;
 	}
-	else if (x > 154 && x < 198)
+	else if (x > MAP_X * 2 - CONSOLE_WIDTH / 2 && x < MAP_X * 2 - 2)
 	{
-		x -= 108;
+		x -= MAP_X * 2 - CONSOLE_WIDTH;
 	}
-	if (y > 15 && y <= 85)
+	if (y > CONSOLE_HEIGHT/2 && y <= MAP_Y - CONSOLE_HEIGHT / 2)
 	{
-		y = 15;
+		y = CONSOLE_HEIGHT / 2;
 	}
-	else if (y > 85 && y < 99)
+	else if (y > CONSOLE_HEIGHT / 2 && y < MAP_Y-1)
 	{
-		y -= 70;
+		y -= MAP_Y - CONSOLE_HEIGHT;
 	}
 
 	COORD CursorPosition = { x,y };
@@ -123,21 +124,21 @@ void shoot(const Player* player, Weapon* weapon, const char* MapData[MAP_Y][MAP_
 	{
 		int x = player->position[0] * 2;
 		int y = player->position[1];
-		if (x > 46 && x <= 154)
+		if (x > CONSOLE_WIDTH / 2 && x <= MAP_X * 2 - CONSOLE_WIDTH / 2)
 		{
-			x = 46;
+			x = CONSOLE_WIDTH / 2;
 		}
-		else if (x > 154 && x < 198)
+		else if (x > MAP_X * 2 - CONSOLE_WIDTH / 2 && x < MAP_X * 2 - 2)
 		{
-			x -= 108;
+			x -= MAP_X * 2 - CONSOLE_WIDTH;
 		}
-		if (y > 15 && y <= 85)
+		if (y > CONSOLE_HEIGHT / 2 && y <= MAP_Y - CONSOLE_HEIGHT / 2)
 		{
-			y = 15;
+			y = CONSOLE_HEIGHT / 2;
 		}
-		else if (y > 85 && y < 99)
+		else if (y > CONSOLE_HEIGHT / 2 && y < MAP_Y - 1)
 		{
-			y -= 70;
+			y -= MAP_Y - CONSOLE_HEIGHT;
 		}
 		for (int i = 0; i < weapon->reach; i++)
 		{
@@ -210,6 +211,7 @@ void HittedEnemy(Enemy* enemy, const Weapon* weapon, char* MapData[MAP_Y][MAP_X]
 			if (enemy->XYHP[Eindex][2] <= 0)
 			{
 				MapData[EnemyPosition[1]][EnemyPosition[0]] = BLANK;
+				gold++;
 			}
 			EnemyPosition[0] = -1;
 			EnemyPosition[1] = -1;
@@ -222,10 +224,8 @@ void GameOver(const Player* player, const HANDLE screen)
 	if (player->hp <= 0)
 	{
 		DWORD dw;
-		COORD CursorPosition = { 0,0 };
-		FillConsoleOutputCharacter(screen, ' ', CONSOLE_WIDTH * CONSOLE_HEIGHT * 2, CursorPosition, &dw);
-		CursorPosition.X = 40;
-		CursorPosition.Y = 20;
+		COORD CursorPosition = { 40,15 };
+		system("cls");
 		SetConsoleCursorPosition(screen, CursorPosition);
 		WriteFile(screen, "GameOver...", 12, &dw, NULL);
 		Sleep(3000);
@@ -236,4 +236,9 @@ void GameOver(const Player* player, const HANDLE screen)
 int* ReturnVector()
 {
 	return vector;
+}
+
+int GetGoldInfo()
+{
+	return gold;
 }

@@ -11,8 +11,8 @@ static Player circle;
 
 void SetPlayerInfo()
 {
-	circle.position[0] = 50;
-	circle.position[1] = 50;
+	circle.position[0] = MAP_X/2;
+	circle.position[1] = MAP_Y/2;
 	circle.hp = 100;
 	circle.FastMovingDelay = 100;
 	circle.FastMovingReach = 5;
@@ -80,6 +80,7 @@ void SetDoubleCircleInfo()
 	DoubleCircle.speed = 20;
 	DoubleCircle.damage = 10;
 	DoubleCircle.CreateDelay = 300;
+	DoubleCircle.MaxWave = 5;
 	DoubleCircle.shape = "¡Ý";
 }
 
@@ -94,7 +95,12 @@ void FreeEnemyInfo(Enemy *enemy)
 	free(enemy->XYHP);
 }
 
-Enemy* GetEnemyInfo()
+Enemy* GetEnemyInfo(int round)
 {
-	return &DoubleCircle;
+	switch (round)
+	{
+	case 1:
+		return &DoubleCircle;
+		break;
+	}
 }

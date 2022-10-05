@@ -16,4 +16,6 @@ void GameOver(const Player* player, const HANDLE screen);
 
 int* ReturnVector();
 
+int GetGoldInfo();
+
 #endif
