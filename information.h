@@ -66,9 +66,6 @@ Weapon* GetWeaponInfo(char* name);
 // enemy information
 ///////////////////////////
 
-#define ENEMY_NUM 2
-// 적 종류 가짓수
-
 typedef struct _Enemy
 {
 	int MaxNum;
@@ -82,8 +79,8 @@ typedef struct _Enemy
 	char* shape;
 }Enemy;
 
-void SetEnemyInfo();
+void SetEnemyInfo(const int round);
 
-Enemy* GetEnemyInfo(int round);
+Enemy* GetEnemyInfo(const int round);
 
 #endif

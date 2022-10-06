@@ -56,9 +56,9 @@ Weapon* GetWeaponInfo(char* name)
 // enemy information
 ///////////////////////////
 
-Enemy enemy[ENEMY_NUM];
-
-Enemy DoubleCircle;
+static Enemy DoubleCircle;
+static Enemy AtSign;
+static int BeforeRround = 0;
 
 void SetDoubleCircleInfo()
 {
@@ -76,7 +76,7 @@ void SetDoubleCircleInfo()
 			DoubleCircle.XYHP[i][j] = 0;
 		}
 	}
-	DoubleCircle.hp = 20;
+	DoubleCircle.hp = 10;
 	DoubleCircle.speed = 20;
 	DoubleCircle.damage = 10;
 	DoubleCircle.CreateDelay = 300;
@@ -84,9 +84,49 @@ void SetDoubleCircleInfo()
 	DoubleCircle.shape = "¡Ý";
 }
 
-void SetEnemyInfo()
+void SetAtSignInfo()
 {
-	SetDoubleCircleInfo();
+	AtSign.MaxNum = 11;
+	AtSign.XYHP = (int**)malloc(sizeof(int*) * AtSign.MaxNum);
+	AtSign.XYHP[0] = (int*)malloc(sizeof(int) * AtSign.MaxNum * 3);
+	for (int i = 1; i < AtSign.MaxNum; i++)
+	{
+		AtSign.XYHP[i] = AtSign.XYHP[i - 1] + 3;
+	}
+	for (int i = 0; i < AtSign.MaxNum; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			AtSign.XYHP[i][j] = 0;
+		}
+	}
+	AtSign.hp = 30;
+	AtSign.speed = 10;
+	AtSign.damage = 5;
+	AtSign.CreateDelay = 200;
+	AtSign.MaxWave = 5;
+	AtSign.shape = "£À";
+}
+
+void SetEnemyInfo(const int round)
+{
+	while (1)
+	{
+		if (BeforeRround != round)
+		{
+			BeforeRround = round;
+			switch (round)
+			{
+			case 1:
+				SetDoubleCircleInfo();
+				break;
+			case 2:
+				SetAtSignInfo();
+				break;
+			}
+		}
+		Sleep(10);
+	}
 }
 
 void FreeEnemyInfo(Enemy *enemy)
@@ -95,12 +135,15 @@ void FreeEnemyInfo(Enemy *enemy)
 	free(enemy->XYHP);
 }
 
-Enemy* GetEnemyInfo(int round)
+Enemy* GetEnemyInfo(const int round)
 {
 	switch (round)
 	{
 	case 1:
 		return &DoubleCircle;
+		break;
+	case 2:
+		return &AtSign;
 		break;
 	}
 }

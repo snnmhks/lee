@@ -18,24 +18,28 @@ static int wave = 0;
 
 void CreateEnemy(Enemy* enemy)
 {
-	if (CreateDelay >= enemy->CreateDelay)
+	while (1)
 	{
-		for (int i = 0; i < enemy->MaxNum; i++)
+		if (CreateDelay >= enemy->CreateDelay)
 		{
-			int x = (rand() % (MAP_X - 3)) + 1;
-			int y = RandomPosition[rand() % 4];
-			if (enemy->XYHP[i][2] <= 0)
+			for (int i = 0; i < enemy->MaxNum; i++)
 			{
-				enemy->XYHP[i][0] = x;
-				enemy->XYHP[i][1] = y;
-				enemy->XYHP[i][2] = enemy->hp;
+				int x = (rand() % (MAP_X - 3)) + 1;
+				int y = RandomPosition[rand() % 4];
+				if (enemy->XYHP[i][2] <= 0)
+				{
+					enemy->XYHP[i][0] = x;
+					enemy->XYHP[i][1] = y;
+					enemy->XYHP[i][2] = enemy->hp;
+				}
 			}
+			CreateDelay = 0;
 		}
-		CreateDelay = 0;
-	}
-	else if (CreateDelay < enemy->CreateDelay)
-	{
-		CreateDelay++;
+		else if (CreateDelay < enemy->CreateDelay)
+		{
+			CreateDelay++;
+		}
+		Sleep(10);
 	}
 }
 
@@ -54,42 +58,45 @@ void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 
 void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 {
-	for (int i = 0; i < enemy->MaxNum; i++)
+	if (speed >= enemy->speed)
 	{
-		if (speed >= enemy->speed && enemy->XYHP[i][2] > 0)
+		for (int i = 0; i < enemy->MaxNum; i++)
 		{
-			MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = BLANK;
-			if (player->position[0] > enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] + 1] != BLOCK)
+			if (enemy->XYHP[i][2] > 0)
 			{
-				enemy->XYHP[i][0]++;
+				MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = BLANK;
+				if (player->position[0] > enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] + 1] != BLOCK)
+				{
+					enemy->XYHP[i][0]++;
+				}
+				else if (player->position[0] < enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] - 1] != BLOCK)
+				{
+					enemy->XYHP[i][0]--;
+				}
+				if (player->position[1] > enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] + 1][enemy->XYHP[i][0]] != BLOCK)
+				{
+					enemy->XYHP[i][1]++;
+				}
+				else if (player->position[1] < enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] - 1][enemy->XYHP[i][0]] != BLOCK)
+				{
+					enemy->XYHP[i][1]--;
+				}
+				if (player->position[0] == enemy->XYHP[i][0] && player->position[1] == enemy->XYHP[i][1] && DamageDelay_0 <= 0)
+				{
+					player->hp -= enemy->damage;
+					DamageDelay_0 = DamageDelay;
+				}
+				else if (DamageDelay_0 <= DamageDelay)
+				{
+					DamageDelay_0 -= 1;
+				}
+				speed = 0;
 			}
-			else if (player->position[0] < enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] - 1] != BLOCK)
-			{
-				enemy->XYHP[i][0]--;
-			}
-			if (player->position[1] > enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] + 1][enemy->XYHP[i][0]] != BLOCK)
-			{
-				enemy->XYHP[i][1]++;
-			}
-			else if (player->position[1] < enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] - 1][enemy->XYHP[i][0]] != BLOCK)
-			{
-				enemy->XYHP[i][1]--;
-			}
-			if (player->position[0] == enemy->XYHP[i][0] && player->position[1] == enemy->XYHP[i][1] && DamageDelay_0 <= 0)
-			{
-				player->hp -= enemy->damage;
-				DamageDelay_0 = DamageDelay;
-			}
-			else if (DamageDelay_0 <= DamageDelay)
-			{
-				DamageDelay_0 -= 1;
-			}
-			speed = 0;
 		}
-		else if (speed< enemy->speed)
-		{
-			speed++;
-		}
+	}
+	else if (speed < enemy->speed)
+	{
+		speed++;
 	}
 }
 

@@ -13,11 +13,13 @@ int main()
 {
 	SetPlayerInfo();
 	SetPistolInfo();
-	SetEnemyInfo();
 	SetMapData();
 	ScreenInit();
 	SetConsoleScreen();
 	//SetBarrier();
+
+	_beginthreadex(NULL, 0, (_beginthreadex_proc_type)SetEnemyInfo, GetRoundInfo(), 0, NULL);
+	_beginthreadex(NULL, 0, (_beginthreadex_proc_type)CreateEnemy, GetEnemyInfo(GetRoundInfo()), 0, NULL);
 
 	int RevisionScreen = 0;
 	while (1)
@@ -26,7 +28,6 @@ int main()
 		ScreenClear();
 		GameOver(GetPlayerInfo(), GetScreenInfo());
 		PrintStateScreen(GetPlayerInfo(), GetWeaponInfo("pistol"), GetRoundInfo(), GetGoldInfo(), GetScreenInfo());
-		CreateEnemy(GetEnemyInfo(GetRoundInfo()));
 		MoveEnemy(GetPlayerInfo(), GetEnemyInfo(GetRoundInfo()), ReturnMapData());
 		EnemyToMap(GetEnemyInfo(GetRoundInfo()), ReturnMapData());
 		MapPrint(GetPlayerInfo(), GetScreenInfo());
