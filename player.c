@@ -12,52 +12,63 @@ static int vector[2] = { 1,0 };
 static int EnemyPosition[2] = { -1, -1 };
 // 첫번째 인자부터 적 x좌표, 적 y좌표
 static int gold = 0;
+static int MoveDelay = 0;
 
 //////////////////////////////////////////
 
 void MovePlayer(Player* player, const char* MapData[MAP_Y][MAP_X])
 {
-	if (GetAsyncKeyState(VK_UP) & 0x8000 || GetAsyncKeyState(VK_DOWN) & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000)
+	if (MoveDelay >= player->Speed)
 	{
-		vector[0] = 0;
-		vector[1] = 0;
-	}
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-	{
-		player->position[1] -= 1;
-		if (MapData[player->position[1]][player->position[0]] != "  ")
+		if (GetAsyncKeyState(VK_UP) & 0x8000 || GetAsyncKeyState(VK_DOWN) & 0x8000 || \
+			GetAsyncKeyState(VK_RIGHT) & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
-			player->position[1] += 1;
+			vector[0] = 0;
+			vector[1] = 0;
 		}
-		vector[1] = -1;
-	}
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-	{
-		player->position[1] += 1;
-		if (MapData[player->position[1]][player->position[0]] != "  ")
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
 			player->position[1] -= 1;
+			if (MapData[player->position[1]][player->position[0]] != "  ")
+			{
+				player->position[1] += 1;
+			}
+			vector[1] = -1;
 		}
-		vector[1] = 1;
-	}
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{
-		player->position[0] += 1;
-		if (MapData[player->position[1]][player->position[0]] != "  ")
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
-			player->position[0] -= 1;
+			player->position[1] += 1;
+			if (MapData[player->position[1]][player->position[0]] != "  ")
+			{
+				player->position[1] -= 1;
+			}
+			vector[1] = 1;
 		}
-		vector[0] = 1;
-	}
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{
-		player->position[0] -= 1;
-		if (MapData[player->position[1]][player->position[0]] != "  ")
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
 			player->position[0] += 1;
+			if (MapData[player->position[1]][player->position[0]] != "  ")
+			{
+				player->position[0] -= 1;
+			}
+			vector[0] = 1;
 		}
-		vector[0] = -1;
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			player->position[0] -= 1;
+			if (MapData[player->position[1]][player->position[0]] != "  ")
+			{
+				player->position[0] += 1;
+			}
+			vector[0] = -1;
+		}
+		MoveDelay = 0;
 	}
+	else if (MoveDelay < player->Speed)
+	{
+		MoveDelay++;
+	}
+
 	if (GetAsyncKeyState(VK_SPACE) && player->RemainFastMovingDelay >= player->FastMovingDelay)
 	{
 		for (int i = 0; i < player->FastMovingReach; i++)

@@ -13,34 +13,43 @@ static int DamageDelay_0 = 0;
 static int DamageDelay = 10;
 static int round = 1;
 static int wave = 0;
+static int ResponNum = 10;
 
 //////////////////////////////////////
 
 void CreateEnemy(Enemy* enemy)
 {
-	while (1)
+	if (CreateDelay >= enemy->CreateDelay)
 	{
-		if (CreateDelay >= enemy->CreateDelay)
+		int MaxNum = 0;
+		for (int i = 0; i < enemy->MaxNum; i++)
 		{
-			for (int i = 0; i < enemy->MaxNum; i++)
+			if (enemy->XYHP[i][2] <= 0)
 			{
-				int x = (rand() % (MAP_X - 3)) + 1;
-				int y = RandomPosition[rand() % 4];
-				if (enemy->XYHP[i][2] <= 0)
-				{
-					enemy->XYHP[i][0] = x;
-					enemy->XYHP[i][1] = y;
-					enemy->XYHP[i][2] = enemy->hp;
-				}
+				enemy->XYHP[i][0] = (rand() % (MAP_X - 3)) + 1;
+				enemy->XYHP[i][1] = (rand() % (MAP_X - 3)) + 1;
+				enemy->XYHP[i][2] = enemy->hp;
+				MaxNum++;
 			}
-			CreateDelay = 0;
+			if (MaxNum >= ResponNum)
+			{
+				break;
+			}
 		}
-		else if (CreateDelay < enemy->CreateDelay)
-		{
-			CreateDelay++;
-		}
-		Sleep(10);
+		CreateDelay = 0;
+		wave++;
 	}
+	else if (CreateDelay < enemy->CreateDelay)
+	{
+		CreateDelay++;
+	}
+	if (wave >= enemy->MaxWave)
+	{
+		round++;
+		wave = 0;
+		Sleep(1000);
+	}
+	Sleep(10);
 }
 
 void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X])

@@ -30,12 +30,13 @@ typedef struct _Player
 	int hp;
 	int FastMovingReach;
 	int FastMovingDelay;
+	int Speed;
 	char* shape;
 
 	int RemainFastMovingDelay;
 }Player;
 
-void SetPlayerInfo();
+void SetWeaponInfo();
 
 Player* GetPlayerInfo();
 
@@ -66,10 +67,12 @@ Weapon* GetWeaponInfo(char* name);
 // enemy information
 ///////////////////////////
 
+#define MAX_ENEMY_NUM 100
+
 typedef struct _Enemy
 {
 	int MaxNum;
-	int **XYHP;
+	int XYHP[MAX_ENEMY_NUM][3];
 	// XYHP의 첫번째 길이가 최대 몹 수, 두번째 인자는 순서대로 x좌표, y좌표, hp다.
 	int hp;
 	int speed;
@@ -79,7 +82,7 @@ typedef struct _Enemy
 	char* shape;
 }Enemy;
 
-void SetEnemyInfo(const int round);
+void SetEnemyInfo();
 
 Enemy* GetEnemyInfo(const int round);
 
