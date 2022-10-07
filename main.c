@@ -9,6 +9,27 @@
 #include "information.h"
 #include "enemy.h"
 
+void EnemyAct()
+{
+	while (1)
+	{
+		CreateEnemy(GetEnemyInfo(GetRoundInfo()), ReturnMapData());
+		MoveEnemy(GetPlayerInfo(), GetEnemyInfo(GetRoundInfo()), ReturnMapData());
+		EnemyToMap(GetEnemyInfo(GetRoundInfo()), ReturnMapData());
+		Sleep(10);
+	}
+}
+
+void PlayerAct()
+{
+	while (1)
+	{
+		MovePlayer(GetPlayerInfo(), ReturnMapData());
+		HittedEnemy(GetEnemyInfo(GetRoundInfo()), GetWeaponInfo("AutoPistol"), ReturnMapData());
+		Sleep(10);
+	}
+}
+
 int main()
 {
 	SetPlayerInfo();
@@ -19,6 +40,9 @@ int main()
 	SetEnemyInfo();
 	//SetBarrier();
 
+	_beginthreadex(NULL, 0, (_beginthreadex_proc_type)EnemyAct, NULL, 0, NULL);
+	_beginthreadex(NULL, 0, (_beginthreadex_proc_type)PlayerAct, NULL, 0, NULL);
+
 	int RevisionScreen = 0;
 	while (1)
 	{
@@ -26,14 +50,9 @@ int main()
 		ScreenClear();
 		GameOver(GetPlayerInfo(), GetScreenInfo());
 		PrintStateScreen(GetPlayerInfo(), GetWeaponInfo("AutoPistol"), GetRoundInfo(), GetGoldInfo(), GetScreenInfo());
-		_beginthreadex(NULL, 0, (_beginthreadex_proc_type)CreateEnemy, GetEnemyInfo(GetRoundInfo()), 0, NULL);
-		MoveEnemy(GetPlayerInfo(), GetEnemyInfo(GetRoundInfo()), ReturnMapData());
-		EnemyToMap(GetEnemyInfo(GetRoundInfo()), ReturnMapData());
 		MapPrint(GetPlayerInfo(), GetScreenInfo());
-		MovePlayer(GetPlayerInfo(), ReturnMapData());
 		PlayerPrint(GetPlayerInfo(), GetWeaponInfo("AutoPistol"), GetScreenInfo());
 		shoot(GetPlayerInfo(), GetWeaponInfo("AutoPistol"), ReturnMapData(), GetScreenInfo());
-		HittedEnemy(GetEnemyInfo(GetRoundInfo()), GetWeaponInfo("AutoPistol"), ReturnMapData());
 		if (RevisionScreen != 2)
 		// 버퍼 두개의 크기를 한번 늘였다가 줄여줘야지 제대로 프린팅이됨
 		{

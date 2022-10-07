@@ -16,7 +16,7 @@ void SetPlayerInfo()
 	circle.hp = 100;
 	circle.FastMovingDelay = 100;
 	circle.FastMovingReach = 5;
-	circle.Speed = 2;
+	circle.Speed = 5;
 	circle.shape = "¡Û";
 
 	circle.RemainFastMovingDelay = 0;
@@ -105,6 +105,7 @@ void SetDoubleCircleInfo()
 	DoubleCircle.damage = 10;
 	DoubleCircle.CreateDelay = 300;
 	DoubleCircle.MaxWave = 2;
+	DoubleCircle.GetGold = 1;
 	DoubleCircle.shape = "¡Ý";
 }
 
@@ -123,6 +124,7 @@ void SetAtSignInfo()
 	AtSign.damage = 5;
 	AtSign.CreateDelay = 200;
 	AtSign.MaxWave = 10;
+	AtSign.GetGold = 2;
 	AtSign.shape = "£À";
 }
 

@@ -79,6 +79,7 @@ typedef struct _Enemy
 	int damage;
 	int CreateDelay;
 	int MaxWave;
+	int GetGold;
 	char* shape;
 }Enemy;
 

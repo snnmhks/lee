@@ -17,7 +17,7 @@ static int ResponNum = 10;
 
 //////////////////////////////////////
 
-void CreateEnemy(Enemy* enemy)
+void CreateEnemy(Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 {
 	if (CreateDelay >= enemy->CreateDelay)
 	{
@@ -45,6 +45,13 @@ void CreateEnemy(Enemy* enemy)
 	}
 	if (wave >= enemy->MaxWave)
 	{
+		for (int i = 0; i < enemy->MaxNum; i++)
+		{
+			if (enemy->XYHP[i][2] > 0)
+			{
+				MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = BLANK;
+			}
+		}
 		round++;
 		wave = 0;
 		Sleep(1000);
@@ -74,19 +81,19 @@ void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 			if (enemy->XYHP[i][2] > 0)
 			{
 				MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = BLANK;
-				if (player->position[0] > enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] + 1] != BLOCK)
+				if (player->position[0] > enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] + 1] == BLANK)
 				{
 					enemy->XYHP[i][0]++;
 				}
-				else if (player->position[0] < enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] - 1] != BLOCK)
+				else if (player->position[0] < enemy->XYHP[i][0] && MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0] - 1] == BLANK)
 				{
 					enemy->XYHP[i][0]--;
 				}
-				if (player->position[1] > enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] + 1][enemy->XYHP[i][0]] != BLOCK)
+				if (player->position[1] > enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] + 1][enemy->XYHP[i][0]] == BLANK)
 				{
 					enemy->XYHP[i][1]++;
 				}
-				else if (player->position[1] < enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] - 1][enemy->XYHP[i][0]] != BLOCK)
+				else if (player->position[1] < enemy->XYHP[i][1] && MapData[enemy->XYHP[i][1] - 1][enemy->XYHP[i][0]] == BLANK)
 				{
 					enemy->XYHP[i][1]--;
 				}

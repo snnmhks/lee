@@ -4,7 +4,7 @@
 
 #include "information.h"
 
-void CreateEnemy(Enemy* enemy);
+void CreateEnemy(Enemy* enemy, char* MapData[MAP_Y][MAP_X]);
 
 void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X]);
 

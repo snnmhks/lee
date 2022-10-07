@@ -222,7 +222,7 @@ void HittedEnemy(Enemy* enemy, const Weapon* weapon, char* MapData[MAP_Y][MAP_X]
 			if (enemy->XYHP[Eindex][2] <= 0)
 			{
 				MapData[EnemyPosition[1]][EnemyPosition[0]] = BLANK;
-				gold++;
+				gold += enemy->GetGold;
 			}
 			EnemyPosition[0] = -1;
 			EnemyPosition[1] = -1;
