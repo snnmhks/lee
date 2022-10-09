@@ -12,6 +12,7 @@
 // 콘솔창 크기 조절하는 변수를 바꾸려고 하면 변수를 바꾸고 map.c 있는 SetConsoleScreen에 있는 값과 main.c에 있는 값을 같이 바꾸어 주어야 한다.
 #define MAP_X 50
 #define MAP_Y 50
+// 최소 50 / 50
 #define BLOCK "■"
 #define WALL "□"
 #define BLANK "  "
@@ -51,9 +52,13 @@ typedef struct _Weapon
 	char* name;
 	char* shape;
 	int damage;
+	int UpgradeDamage;
 	int MaxBullet;
 	int ReloadDelay;
 
+	int scope;
+	int magazine;
+	int Auto;
 	int RemainBullet;
 	int RemainReloadDelay;
 	int ReloadState;

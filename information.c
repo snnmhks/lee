@@ -41,27 +41,35 @@ void SetPistolInfo()
 	pistol.name = "pistol";
 	pistol.shape = "¡Ú";
 	pistol.damage = 10;
+	pistol.UpgradeDamage = 5;
 	pistol.MaxBullet = 10;
 	pistol.ReloadDelay = 100;
 
 	pistol.RemainBullet = 10;
 	pistol.RemainReloadDelay = 0;
 	pistol.ReloadState = 0;
+	pistol.scope = 0;
+	pistol.magazine = 0;
+	pistol.Auto = 0;
 }
 
 void SetAutoPistolInfo()
 {
-	pistol.FireDelay = 10;
-	pistol.reach = 6;
-	pistol.name = "AutoPistol";
-	pistol.shape = "¡Ù";
-	pistol.damage = 15;
-	pistol.MaxBullet = 10;
-	pistol.ReloadDelay = 50;
+	AutoPistol.FireDelay = 10;
+	AutoPistol.reach = 6;
+	AutoPistol.name = "AutoPistol";
+	AutoPistol.shape = "¡Ù";
+	AutoPistol.damage = 15;
+	AutoPistol.UpgradeDamage = 5;
+	AutoPistol.MaxBullet = 10;
+	AutoPistol.ReloadDelay = 50;
 
-	pistol.RemainBullet = 10;
-	pistol.RemainReloadDelay = 0;
-	pistol.ReloadState = 0;
+	AutoPistol.RemainBullet = 10;
+	AutoPistol.RemainReloadDelay = 0;
+	AutoPistol.ReloadState = 0;
+	AutoPistol.scope = 0;
+	AutoPistol.magazine = 0;
+	AutoPistol.Auto = 0;
 }
 
 void SetWeaponInfo()
@@ -122,7 +130,7 @@ void SetAtSignInfo()
 	AtSign.hp = 30;
 	AtSign.speed = 10;
 	AtSign.damage = 5;
-	AtSign.CreateDelay = 200;
+	AtSign.CreateDelay = 300;
 	AtSign.MaxWave = 10;
 	AtSign.GetGold = 2;
 	AtSign.shape = "£À";

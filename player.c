@@ -11,7 +11,7 @@ static int BulletDelay = 0;
 static int vector[2] = { 1,0 };
 static int EnemyPosition[2] = { -1, -1 };
 // 첫번째 인자부터 적 x좌표, 적 y좌표
-static int gold = 0;
+static int gold = 1000;
 static int MoveDelay = 0;
 
 //////////////////////////////////////////
@@ -241,6 +241,70 @@ void GameOver(const Player* player, const HANDLE screen)
 		WriteFile(screen, "GameOver...", 12, &dw, NULL);
 		Sleep(3000);
 		exit(1);
+	}
+}
+
+int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
+{
+	int RandNum = 0;
+	switch (UpNum)
+	{
+	case 1:
+		if (gold >= 50)
+		{
+			weapon->damage += weapon->UpgradeDamage;
+			gold -= 50;
+		}
+		return 0;
+		break;
+	case 2:
+		if (gold >= 200)
+		{
+			if (player->Speed > 0)
+			{
+				player->Speed--;
+				gold -= 200;
+			}
+		}
+		return 0;
+		break;
+	case 3:
+		if (gold >= 30)
+		{
+			player->hp += 10;
+			gold -= 30;
+		}
+		return 0;
+		break;
+	case 4:
+		if (gold >= 30)
+		{
+			RandNum = rand() % 10;
+			switch (RandNum)
+			{
+			case 0:
+				weapon->scope = 1;
+				weapon->reach += 5;
+				break;
+			case 1:
+				weapon->magazine = 1;
+				weapon->MaxBullet += 5;
+				break;
+			case 2:
+				weapon->Auto = 1;
+				weapon->FireDelay = weapon->FireDelay / 2;
+				break;
+			}
+			gold -= 300;
+		}
+		return 0;
+		break;
+	case 6:
+		return 1;
+		break;
+	default:
+		return 0;
+		break;
 	}
 }
 

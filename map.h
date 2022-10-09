@@ -12,7 +12,9 @@ void SetBarrier();
 
 void MapPrint(const Player* player, const HANDLE screen);
 
-void PrintStateScreen(const Player* player, const Weapon *weapon, const int round, const int gold, const HANDLE screen);
+void PrintStateScreen(const Player* player, const Enemy *enemy,const Weapon *weapon, const int round, const int gold, const int wave, const HANDLE screen);
+
+int PrintShop(int gold, const HANDLE screen);
 
 char* ReturnMapData();
 

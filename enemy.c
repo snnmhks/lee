@@ -43,7 +43,7 @@ void CreateEnemy(Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 	{
 		CreateDelay++;
 	}
-	if (wave >= enemy->MaxWave)
+	if (wave > enemy->MaxWave)
 	{
 		for (int i = 0; i < enemy->MaxNum; i++)
 		{
@@ -57,19 +57,6 @@ void CreateEnemy(Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 		Sleep(1000);
 	}
 	Sleep(10);
-}
-
-void EnemyToMap(const Enemy* enemy, char* MapData[MAP_Y][MAP_X])
-{
-
-	for (int i = 0; i < enemy->MaxNum; i++)
-	{
-		if (enemy->XYHP[i][2] > 0)
-		{
-			MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = enemy->shape;
-		}
-	}
-	
 }
 
 void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
@@ -97,6 +84,7 @@ void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 				{
 					enemy->XYHP[i][1]--;
 				}
+				MapData[enemy->XYHP[i][1]][enemy->XYHP[i][0]] = enemy->shape;
 				if (player->position[0] == enemy->XYHP[i][0] && player->position[1] == enemy->XYHP[i][1] && DamageDelay_0 <= 0)
 				{
 					player->hp -= enemy->damage;
@@ -119,4 +107,9 @@ void MoveEnemy(Player* player, Enemy* enemy, char* MapData[MAP_Y][MAP_X])
 int GetRoundInfo()
 {
 	return round;
+}
+
+int GetWaveInfo()
+{
+	return wave;
 }
