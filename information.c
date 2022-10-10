@@ -96,6 +96,7 @@ Weapon* GetWeaponInfo(char* name)
 
 static Enemy DoubleCircle;
 static Enemy AtSign;
+static Enemy spade;
 static int BeforeRround = 0;
 
 void SetDoubleCircleInfo()
@@ -112,8 +113,8 @@ void SetDoubleCircleInfo()
 	DoubleCircle.speed = 20;
 	DoubleCircle.damage = 10;
 	DoubleCircle.CreateDelay = 300;
-	DoubleCircle.MaxWave = 2;
-	DoubleCircle.GetGold = 1;
+	DoubleCircle.MaxWave = 10;
+	DoubleCircle.GetGold = 2;
 	DoubleCircle.shape = "¡Ý";
 }
 
@@ -132,14 +133,34 @@ void SetAtSignInfo()
 	AtSign.damage = 5;
 	AtSign.CreateDelay = 300;
 	AtSign.MaxWave = 10;
-	AtSign.GetGold = 2;
+	AtSign.GetGold = 4;
 	AtSign.shape = "£À";
+}
+
+void SetSpadeInfo()
+{
+	spade.MaxNum = 70;
+	for (int i = 1; i < spade.MaxNum; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			spade.XYHP[i][j] = 0;
+		}
+	}
+	spade.hp = 70;
+	spade.speed = 35;
+	spade.damage = 15;
+	spade.CreateDelay = 300;
+	spade.MaxWave = 10;
+	spade.GetGold = 10;
+	spade.shape = "¢»";
 }
 
 void SetEnemyInfo()
 {
 	SetDoubleCircleInfo();
 	SetAtSignInfo();
+	SetSpadeInfo();
 }
 
 Enemy* GetEnemyInfo(const int round)
@@ -149,8 +170,11 @@ Enemy* GetEnemyInfo(const int round)
 	case 1:
 		return &DoubleCircle;
 		break;
-	default:
+	case 2:
 		return &AtSign;
+		break;
+	default:
+		return &spade;
 		break;
 	}
 }

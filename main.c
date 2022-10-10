@@ -9,8 +9,7 @@
 #include "information.h"
 #include "enemy.h"
 
-int BeforeRound = 1;
-int RevisionScreen = 0;
+int BeforeRound = 0;
 
 void EnemyAct()
 {
@@ -42,7 +41,7 @@ void ShopAct()
 {
 	while (1)
 	{
-		if (BeforeRound < GetRoundInfo() && RevisionScreen >= 2)
+		if (BeforeRound < GetRoundInfo())
 		{
 			ScreenFlipping();
 			ScreenClear();
@@ -50,6 +49,17 @@ void ShopAct()
 			Sleep(10);
 		}
 	}
+}
+
+void RevisionScreen()
+{
+	// 버퍼 두개의 크기를 한번 늘였다가 줄여줘야지 제대로 프린팅이됨
+	ScreenFlipping();
+	system("mode con cols=93 lines=40");
+	system("mode con cols=92 lines=40");
+	ScreenFlipping();
+	system("mode con cols=93 lines=40");
+	system("mode con cols=92 lines=40");
 }
 
 int main()
@@ -62,6 +72,24 @@ int main()
 	ScreenInit();
 	SetConsoleScreen();
 	SetEnemyInfo();
+	RevisionScreen();
+
+	while (1)
+	{
+		ScreenFlipping();
+		ScreenClear();
+		int aaa = IntroScreen(GetScreenInfo());
+		if (aaa == 0)
+		{
+			break;
+		}
+		else if (aaa == 1)
+		{
+			ScreenClear();
+			HowToPlay(GetScreenInfo());
+		}
+		Sleep(10);
+	}
 	//SetBarrier();
 
 	_beginthreadex(NULL, 0, (_beginthreadex_proc_type)EnemyAct, NULL, 0, NULL);
@@ -79,13 +107,6 @@ int main()
 			MapPrint(GetPlayerInfo(), GetScreenInfo());
 			PlayerPrint(GetPlayerInfo(), GetWeaponInfo("pistol"), GetScreenInfo());
 			shoot(GetPlayerInfo(), GetWeaponInfo("pistol"), ReturnMapData(), GetScreenInfo());
-		}
-		if (RevisionScreen < 2)
-		// 버퍼 두개의 크기를 한번 늘였다가 줄여줘야지 제대로 프린팅이됨
-		{
-			system("mode con cols=93 lines=40");
-			system("mode con cols=92 lines=40");
-			RevisionScreen++;
 		}
 		Sleep(10);
 	}

@@ -9,6 +9,7 @@
 
 static char* map[MAP_Y][MAP_X];
 static int index = 1;
+static int IntroIndex = 0;
 //////////////////////////////////
 
 void SetConsoleScreen()
@@ -92,6 +93,77 @@ void SetBarrier()
 		}
 	}
 
+}
+
+int IntroScreen(const HANDLE screen)
+{
+	COORD IntroPosition = { 0,0 };
+	DWORD dw;
+
+	IntroPosition.X = CONSOLE_WIDTH / 2 - 4;
+	IntroPosition.Y = CONSOLE_HEIGHT / 2;
+	SetConsoleCursorPosition(screen, IntroPosition);
+	if (IntroIndex == 0)
+	{
+		WriteFile(screen, ">", 2, &dw, NULL);
+	}
+	WriteFile(screen, "Game Start", 11, &dw, NULL);
+
+	IntroPosition.Y = CONSOLE_HEIGHT / 2 + 2;
+	SetConsoleCursorPosition(screen, IntroPosition);
+	if (IntroIndex == 1)
+	{
+		WriteFile(screen, ">", 2, &dw, NULL);
+	}
+	WriteFile(screen, "How To Play", 12, &dw, NULL);
+
+	if (GetAsyncKeyState(VK_UP) & 0x0001)
+	{
+		IntroIndex--;
+		if (IntroIndex < 0)
+		{
+			IntroIndex = 0;
+		}
+	}
+	if (GetAsyncKeyState(VK_DOWN) & 0x0001)
+	{
+		IntroIndex++;
+		if (IntroIndex > 1)
+		{
+			IntroIndex = 1;
+		}
+	}
+
+	if (GetAsyncKeyState(VK_RETURN) & 0x0001)
+	{
+		return IntroIndex;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+void HowToPlay(const HANDLE screen)
+{
+	COORD HTPPosition = { 0,0 };
+	DWORD dw;
+
+	ScreenFlipping();
+	HTPPosition.X = CONSOLE_WIDTH / 4;
+	HTPPosition.Y = CONSOLE_HEIGHT / 2;
+	SetConsoleCursorPosition(screen, HTPPosition);
+	WriteFile(screen, "1. 방향기로 움직인다.", 22, &dw, NULL);
+	HTPPosition.Y = CONSOLE_HEIGHT / 2 + 2;
+	SetConsoleCursorPosition(screen, HTPPosition);
+	WriteFile(screen, "2. A를 누르면 바라보는 방향으로 발사한다.", 42, &dw, NULL);
+	HTPPosition.Y = CONSOLE_HEIGHT / 2 + 4;
+	SetConsoleCursorPosition(screen, HTPPosition);
+	WriteFile(screen, "3. 스페이스를 누르면 바라보는 방향으로 빠르게 움직인다.", 56, &dw, NULL);
+	HTPPosition.Y = CONSOLE_HEIGHT / 2 + 6;
+	SetConsoleCursorPosition(screen, HTPPosition);
+	WriteFile(screen, "4. 매 라운드가 시작 전, 상점이 열리고 엔터키로 선택한다.", 57, &dw, NULL);
+	Sleep(7000);
 }
 
 void MapPrint(const Player* player, const HANDLE screen)
@@ -294,7 +366,7 @@ int PrintShop(int gold, const HANDLE screen)
 	{
 		WriteFile(screen, ">", 2, &dw, NULL);
 	}
-	WriteFile(screen, "Upgrade Damage (50G)", 21, &dw, NULL);
+	WriteFile(screen, "Upgrade Damage (100G)", 22, &dw, NULL);
 
 	ShopPosition.Y++;
 	SetConsoleCursorPosition(screen, ShopPosition);
@@ -310,7 +382,7 @@ int PrintShop(int gold, const HANDLE screen)
 	{
 		WriteFile(screen, ">", 2, &dw, NULL);
 	}
-	WriteFile(screen, "Upgrade HP (30G)", 17, &dw, NULL);
+	WriteFile(screen, "Upgrade HP (50G)", 17, &dw, NULL);
 
 	ShopPosition.Y++;
 	SetConsoleCursorPosition(screen, ShopPosition);

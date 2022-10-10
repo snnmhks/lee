@@ -11,9 +11,13 @@ static int BulletDelay = 0;
 static int vector[2] = { 1,0 };
 static int EnemyPosition[2] = { -1, -1 };
 // 첫번째 인자부터 적 x좌표, 적 y좌표
-static int gold = 1000;
+static int gold = 200;
 static int MoveDelay = 0;
 
+static int UpgradeDamageCost = 100;
+static int UpgradeSpeedCost = 200;
+static int UpgradeHPCost = 50;
+static int UpgradePartCost = 300;
 //////////////////////////////////////////
 
 void MovePlayer(Player* player, const char* MapData[MAP_Y][MAP_X])
@@ -234,6 +238,7 @@ void GameOver(const Player* player, const HANDLE screen)
 {
 	if (player->hp <= 0)
 	{
+		ScreenFlipping();
 		DWORD dw;
 		COORD CursorPosition = { 40,15 };
 		system("cls");
@@ -250,34 +255,34 @@ int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
 	switch (UpNum)
 	{
 	case 1:
-		if (gold >= 50)
+		if (gold >= UpgradeDamageCost)
 		{
 			weapon->damage += weapon->UpgradeDamage;
-			gold -= 50;
+			gold -= UpgradeDamageCost;
 		}
 		return 0;
 		break;
 	case 2:
-		if (gold >= 200)
+		if (gold >= UpgradeSpeedCost)
 		{
 			if (player->Speed > 0)
 			{
 				player->Speed--;
-				gold -= 200;
+				gold -= UpgradeSpeedCost;
 			}
 		}
 		return 0;
 		break;
 	case 3:
-		if (gold >= 30)
+		if (gold >= UpgradeHPCost)
 		{
 			player->hp += 10;
-			gold -= 30;
+			gold -= UpgradeHPCost;
 		}
 		return 0;
 		break;
 	case 4:
-		if (gold >= 30)
+		if (gold >= UpgradePartCost)
 		{
 			RandNum = rand() % 10;
 			switch (RandNum)
@@ -295,7 +300,7 @@ int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
 				weapon->FireDelay = weapon->FireDelay / 2;
 				break;
 			}
-			gold -= 300;
+			gold -= UpgradePartCost;
 		}
 		return 0;
 		break;
