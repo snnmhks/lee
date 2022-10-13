@@ -179,21 +179,18 @@ void SetCloverInfo()
 
 void SetMiddleBossInfo()
 {
-	clover.MaxNum = 50;
-	for (int i = 1; i < clover.MaxNum; i++)
+	MiddleBoss.MaxNum = 1;
+	for (int j = 0; j < 3; j++)
 	{
-		for (int j = 0; j < 3; j++)
-		{
-			clover.XYHP[i][j] = 0;
-		}
+		MiddleBoss.XYHP[0][j] = 0;
 	}
-	clover.hp = 90;
-	clover.speed = 15;
-	clover.damage = 15;
-	clover.CreateDelay = 300;
-	clover.MaxWave = 10;
-	clover.GetGold = 15;
-	clover.shape = "¢¿";
+	MiddleBoss.hp = 3000;
+	MiddleBoss.speed = 100;
+	MiddleBoss.damage = 70;
+	MiddleBoss.CreateDelay = 300;
+	MiddleBoss.MaxWave = 20;
+	MiddleBoss.GetGold = 1000;
+	MiddleBoss.shape = "¡Ø";
 }
 
 void SetEnemyInfo()
