@@ -97,6 +97,8 @@ Weapon* GetWeaponInfo(char* name)
 static Enemy DoubleCircle;
 static Enemy AtSign;
 static Enemy spade;
+static Enemy clover;
+static Enemy MiddleBoss;
 static int BeforeRround = 0;
 
 void SetDoubleCircleInfo()
@@ -149,11 +151,49 @@ void SetSpadeInfo()
 	}
 	spade.hp = 70;
 	spade.speed = 35;
-	spade.damage = 15;
+	spade.damage = 20;
 	spade.CreateDelay = 300;
 	spade.MaxWave = 10;
 	spade.GetGold = 10;
 	spade.shape = "¢»";
+}
+
+void SetCloverInfo()
+{
+	clover.MaxNum = 50;
+	for (int i = 1; i < clover.MaxNum; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			clover.XYHP[i][j] = 0;
+		}
+	}
+	clover.hp = 90;
+	clover.speed = 15;
+	clover.damage = 15;
+	clover.CreateDelay = 300;
+	clover.MaxWave = 10;
+	clover.GetGold = 15;
+	clover.shape = "¢¿";
+}
+
+void SetMiddleBossInfo()
+{
+	clover.MaxNum = 50;
+	for (int i = 1; i < clover.MaxNum; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			clover.XYHP[i][j] = 0;
+		}
+	}
+	clover.hp = 90;
+	clover.speed = 15;
+	clover.damage = 15;
+	clover.CreateDelay = 300;
+	clover.MaxWave = 10;
+	clover.GetGold = 15;
+	clover.shape = "¢¿";
 }
 
 void SetEnemyInfo()
@@ -161,6 +201,7 @@ void SetEnemyInfo()
 	SetDoubleCircleInfo();
 	SetAtSignInfo();
 	SetSpadeInfo();
+	SetCloverInfo();
 }
 
 Enemy* GetEnemyInfo(const int round)
@@ -173,8 +214,14 @@ Enemy* GetEnemyInfo(const int round)
 	case 2:
 		return &AtSign;
 		break;
-	default:
+	case 3:
 		return &spade;
+		break;
+	case 4:
+		return &clover;
+		break;
+	default:
+		exit(1);
 		break;
 	}
 }

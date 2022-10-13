@@ -45,7 +45,7 @@ void ShopAct()
 		{
 			ScreenFlipping();
 			ScreenClear();
-			BeforeRound += UpgradePlayer(GetPlayerInfo(), GetWeaponInfo("pistol"), PrintShop(GetGoldInfo(), GetScreenInfo()));
+			BeforeRound += UpgradePlayer(GetPlayerInfo(), GetWeaponInfo("pistol"), PrintShop(GetGoldInfo(), GetScreenInfo()), GetScreenInfo());
 			Sleep(10);
 		}
 	}
@@ -64,8 +64,6 @@ void RevisionScreen()
 
 int main()
 {
-	time_t current = time(NULL);
-	srand(current);
 	SetPlayerInfo();
 	SetWeaponInfo();
 	SetMapData();

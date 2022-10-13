@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <Windows.h>
+#include <string.h>
 
 #include "player.h"
 #include "cursor.h"
@@ -11,13 +12,14 @@ static int BulletDelay = 0;
 static int vector[2] = { 1,0 };
 static int EnemyPosition[2] = { -1, -1 };
 // 첫번째 인자부터 적 x좌표, 적 y좌표
-static int gold = 200;
+static int gold = 500;
 static int MoveDelay = 0;
 
 static int UpgradeDamageCost = 100;
 static int UpgradeSpeedCost = 200;
 static int UpgradeHPCost = 50;
 static int UpgradePartCost = 300;
+static char* text = " ";
 //////////////////////////////////////////
 
 void MovePlayer(Player* player, const char* MapData[MAP_Y][MAP_X])
@@ -77,7 +79,7 @@ void MovePlayer(Player* player, const char* MapData[MAP_Y][MAP_X])
 	{
 		for (int i = 0; i < player->FastMovingReach; i++)
 		{
-			if (MapData[player->position[1] + vector[1] * (i + 1)][player->position[0] + vector[0] * (i + 1)] != "  ")
+			if (MapData[player->position[1] + vector[1] * (i + 1)][player->position[0] + vector[0] * (i + 1)] == WALL)
 			{
 				player->position[0] += vector[0] * i;
 				player->position[1] += vector[1] * i;
@@ -249,9 +251,15 @@ void GameOver(const Player* player, const HANDLE screen)
 	}
 }
 
-int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
+int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum, const HANDLE screen)
 {
+	srand(time(NULL));
+
 	int RandNum = 0;
+	DWORD dw;
+	COORD UpgradePosition = { CONSOLE_WIDTH / 2 - 7,17 };
+	SetConsoleCursorPosition(screen, UpgradePosition);
+	WriteFile(screen, text, strlen(text), &dw, NULL);
 	switch (UpNum)
 	{
 	case 1:
@@ -259,6 +267,7 @@ int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
 		{
 			weapon->damage += weapon->UpgradeDamage;
 			gold -= UpgradeDamageCost;
+			text = "공격력+ 완료";
 		}
 		return 0;
 		break;
@@ -269,6 +278,7 @@ int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
 			{
 				player->Speed--;
 				gold -= UpgradeSpeedCost;
+				text = "스피드+ 완료";
 			}
 		}
 		return 0;
@@ -278,6 +288,7 @@ int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
 		{
 			player->hp += 10;
 			gold -= UpgradeHPCost;
+			text = "체력+ 완료";
 		}
 		return 0;
 		break;
@@ -290,14 +301,20 @@ int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum)
 			case 0:
 				weapon->scope = 1;
 				weapon->reach += 5;
+				text = "스코프 장착 (사거리 증가)";
 				break;
 			case 1:
 				weapon->magazine = 1;
 				weapon->MaxBullet += 5;
+				text = "탄창 용량 증가";
 				break;
 			case 2:
 				weapon->Auto = 1;
 				weapon->FireDelay = weapon->FireDelay / 2;
+				text = "자동 발사기 장착 (공속 증가)";
+				break;
+			default:
+				text = "꽝~";
 				break;
 			}
 			gold -= UpgradePartCost;

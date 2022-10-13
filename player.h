@@ -14,7 +14,7 @@ void HittedEnemy(Enemy* enemy, const Weapon* weapon, char* MapData[MAP_Y][MAP_X]
 
 void GameOver(const Player* player, const HANDLE screen);
 
-int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum);
+int UpgradePlayer(Player* player, Weapon* weapon, const int UpNum, const HANDLE screen);
 
 int* ReturnVector();
 
