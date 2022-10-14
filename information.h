@@ -3,7 +3,7 @@
 #define _INFORMATION_H_
 
 ///////////////////////////
-// map informaion
+// Map informaion
 ///////////////////////////
 
 #define CONSOLE_WIDTH 92
@@ -19,7 +19,7 @@
 #define MAX_GOLD_SCALE 5
 
 ///////////////////////////
-// player information
+// Player information
 ///////////////////////////
 
 #define A_KEY 65
@@ -42,7 +42,7 @@ void SetWeaponInfo();
 Player* GetPlayerInfo();
 
 ///////////////////////////
-// weapon information
+// Weapon information
 ///////////////////////////
 
 typedef struct _Weapon
@@ -69,7 +69,7 @@ void SetPistolInfo();
 Weapon* GetWeaponInfo(char* name);
 
 ///////////////////////////
-// enemy information
+// Enemy information
 ///////////////////////////
 
 #define MAX_ENEMY_NUM 100
@@ -91,5 +91,22 @@ typedef struct _Enemy
 void SetEnemyInfo();
 
 Enemy* GetEnemyInfo(const int round);
+
+///////////////////////////
+// Boss information
+///////////////////////////
+
+typedef struct _Boss
+{
+	int XYHP[3];
+	// XYHP의 첫번째 길이가 최대 몹 수, 두번째 인자는 순서대로 x좌표, y좌표, hp다.
+	int hp;
+	int speed;
+	int damage;
+	int MaxTime;
+	int GetGold;
+	char* shape;
+	int Pattern1Reach;
+}Boss;
 
 #endif

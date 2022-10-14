@@ -98,7 +98,6 @@ static Enemy DoubleCircle;
 static Enemy AtSign;
 static Enemy spade;
 static Enemy clover;
-static Enemy MiddleBoss;
 static int BeforeRround = 0;
 
 void SetDoubleCircleInfo()
@@ -177,19 +176,24 @@ void SetCloverInfo()
 	clover.shape = "¢¿";
 }
 
+///////////////////////////
+// Boss information
+///////////////////////////
+
+static Boss MiddleBoss;
+
 void SetMiddleBossInfo()
 {
-	MiddleBoss.MaxNum = 1;
 	for (int j = 0; j < 3; j++)
 	{
-		MiddleBoss.XYHP[0][j] = 0;
+		MiddleBoss.XYHP[j] = 0;
 	}
 	MiddleBoss.hp = 3000;
 	MiddleBoss.speed = 100;
 	MiddleBoss.damage = 70;
-	MiddleBoss.CreateDelay = 300;
-	MiddleBoss.MaxWave = 20;
+	MiddleBoss.MaxTime = 10000;
 	MiddleBoss.GetGold = 1000;
+	MiddleBoss.Pattern1Reach = 7;
 	MiddleBoss.shape = "¡Ø";
 }
 
@@ -221,4 +225,9 @@ Enemy* GetEnemyInfo(const int round)
 		exit(1);
 		break;
 	}
+}
+
+Boss* GetBossInfo()
+{
+	return &MiddleBoss;
 }
